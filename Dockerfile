@@ -1,4 +1,5 @@
-FROM nginx:1.14.0-alpine
+FROM nginx:alpine
+RUN echo -e "http://nl.alpinelinux.org/alpine/v3.5/main\nhttp://nl.alpinelinux.org/alpine/v3.5/community" > /etc/apk/repositories:
 
 RUN apk --update add python
 RUN apk --no-cache add \
