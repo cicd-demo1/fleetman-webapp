@@ -8,7 +8,7 @@ pipeline {
      
      SERVICE_NAME = "fleetman-webapp"
      //REPOSITORY_TAG="${YOUR_DOCKERHUB_USERNAME}/${ORGANIZATION_NAME}-${SERVICE_NAME}:${BUILD_ID}"
-     REPOSITORY_TAG="${ORGANIZATION_NAME}-${SERVICE_NAME}"
+     REPOSITORY_TAG="${YOUR_DOCKERHUB_USERNAME}/${ORGANIZATION_NAME}-${SERVICE_NAME}"
    }
 
    stages {
@@ -24,11 +24,39 @@ pipeline {
          }
       }
 
-      stage('Build and Push Image') {
-         steps {
-           sh 'docker image build -t ${REPOSITORY_TAG} . --network=host'
-         }
-      }
+      //stage('Build Image') {
+        // steps {
+        //   sh 'docker image build -t ${REPOSITORY_TAG} . --network=host'
+        // }          
+      //}
+      
+       stage('Build Docker Image') {
+            when {
+                branch 'master'
+            }
+            steps {
+                script {
+                    app = docker.build(REPOSITORY_TAG)
+                    app.inside {
+                        sh 'echo Hello, World!'
+                    }
+                }
+            }
+        }
+      
+      stage('Push Docker Image') {
+            when {
+                branch 'master'
+            }
+            steps {
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com', 'docker_hub_login') {
+                        app.push("latest")
+                    }
+                }
+            }
+        }
+      
 
       stage('Deploy to Cluster') {
           steps {
