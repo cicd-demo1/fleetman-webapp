@@ -52,7 +52,7 @@ pipeline {
             steps {
                 script {
                         app=docker.withRegistry('https://registry.hub.docker.com', 'docker_hub_login') {
-                        app.push("latest")
+                        app.push(REPOSITORY_TAG)
                     }
                 }
             }
