@@ -8,7 +8,7 @@ pipeline {
      
      SERVICE_NAME = "fleetman-webapp"
      //REPOSITORY_TAG="${YOUR_DOCKERHUB_USERNAME}/${ORGANIZATION_NAME}-${SERVICE_NAME}:${BUILD_ID}"
-     REPOSITORY_TAG="${YOUR_DOCKERHUB_USERNAME}/${ORGANIZATION_NAME}-${SERVICE_NAME} --network=host"
+     REPOSITORY_TAG="${YOUR_DOCKERHUB_USERNAME}/${ORGANIZATION_NAME}-${SERVICE_NAME}"
    }
 
    stages {
@@ -37,7 +37,7 @@ pipeline {
             }
             steps {
                 script {
-                    app = docker.build(REPOSITORY_TAG)
+                    app = docker.build(REPOSITORY_TAG, "--network=host")
                 }
             }
         }
