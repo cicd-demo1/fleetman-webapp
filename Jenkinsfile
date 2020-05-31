@@ -37,7 +37,7 @@ pipeline {
             }
             steps {
                 script {
-                    app = docker.build(REPOSITORY_TAG, '--network=host -f .')
+                    app = docker.build(REPOSITORY_TAG, '--network=host .')
                 }
             }
         }
